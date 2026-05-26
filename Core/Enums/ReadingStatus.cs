@@ -1,6 +1,7 @@
 namespace MangaVault.Core.Enums
 {
-    public enum FavoriteType
+    public enum ReadingStatus
+    
     {
         
     Reading = 1,      // Leyendo (Los que está siguiendo activamente)

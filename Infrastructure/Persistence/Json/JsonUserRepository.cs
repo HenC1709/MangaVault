@@ -1,5 +1,6 @@
 using System.Text.Json;
 using MangaVault.Core.Entities;
+using MangaVault.Core.Exceptions;
 using MangaVault.Core.Interfaces;
 
 namespace MangaVault.Infrastructure.Persistence.Json
@@ -28,10 +29,21 @@ namespace MangaVault.Infrastructure.Persistence.Json
             var users = GetAll();
            if (users.Any(u => u.UserId == user.UserId || u.Name.ToLower() == user.Name.ToLower()))
             {
-                return;
+                throw new DuplicateUserException(user.Name);
             }
             users.Add(user);
             SaveAll(users);
+        }
+
+        public void Update(User user)
+        {
+            var users = GetAll();
+            var index = users.FindIndex(m => m.UserId == user.UserId);
+            if (index != -1)
+            {
+                users[index] = user;
+                SaveAll(users);
+            }
         }
 
 
