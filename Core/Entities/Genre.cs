@@ -1,16 +1,36 @@
+using System.Text.Json.Serialization;
+
 namespace MangaVault.Core.Entities
 {
     public class Genre
     {
-        public string Name { get; set; } ="";
-        public string Description { get; set; } = "";
+        private string _description = "";
+
+        [JsonInclude]
+        public string Name { get; private set; } = "";
+
+        public string Description
+        {
+            get => _description;
+            set => _description = (value ?? "").Trim();
+        }
 
         public Genre() { }
 
-        public Genre(string name, string description)
+        public Genre(string name, string description = "")
         {
-            Name = name;
-            Description = description; 
-         }
+            Update(name, description);
+        }
+
+        public void Update(string name, string description = "")
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("El nombre del género no puede estar vacío.", nameof(name));
+            }
+
+            Name = name.Trim();
+            Description = description;
+        }
     }
 }
