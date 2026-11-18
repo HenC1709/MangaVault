@@ -1,55 +1,63 @@
-using System.Text.Json;
 using MangaVault.Core.Entities;
+using MangaVault.Core.Exceptions;
 using MangaVault.Core.Interfaces;
 
-namespace MangaVault.Infrastructure.Persistence.Json
+namespace MangaVault.Infrastructure.Persistence.Json;
+
+public class JsonMangaRepository(string? storageDirectory = null) : IMangaRepository
 {
-    public class JsonMangaRepository : IMangaRepository
+    private readonly JsonFileStore<Manga> _store = new("mangas.json", storageDirectory);
+
+    public List<Manga> GetAll() => _store.ReadAll();
+
+    public Manga? GetById(int id) =>
+        _store.Read(mangas => mangas.FirstOrDefault(m => m.Id == id));
+
+    public void Save(Manga manga)
     {
-        private readonly string _path = Path.Combine("Storage", "mangas.json");
+        ArgumentNullException.ThrowIfNull(manga);
 
-        public List<Manga> GetAll()
+        _store.Mutate(mangas =>
         {
-            if (!File.Exists(_path)) return new List<Manga>();
-            string json = File.ReadAllText(_path);
-            return JsonSerializer.Deserialize<List<Manga>>(json) ?? new List<Manga>();
-        }
-
-         public void Delete(int id)
-        {
-            var mangas = GetAll();
-            var ListraFiltrada = mangas.Where(m => m.Id != id).ToList();
-            SaveAll(ListraFiltrada);
-        }
-
-        public Manga? GetById(int id)
-        {
-            return GetAll().FirstOrDefault(l => l.Id == id);
-        }
-        public void Update(Manga manga)
-        {
-            var mangas = GetAll();
-            var index = mangas.FindIndex(m => m.Id == manga.Id);
-            if (index != -1)
+            if (manga.Id <= 0)
             {
-                mangas[index] = manga;
-                SaveAll(mangas);
+                manga.Id = mangas.Count == 0 ? 1 : mangas.Max(m => m.Id) + 1;
             }
-        }
-       
-        public void Save(Manga manga)
-        {
-            var mangas = GetAll();
-            mangas.Add(manga);
-            SaveAll(mangas);
-        }
 
-        private void SaveAll(List<Manga> mangas)
+            if (mangas.Any(m => m.Id == manga.Id))
+                throw new DuplicateMangaException(manga.Id);
+
+            if (mangas.Any(m => m.Type == manga.Type && string.Equals(m.Title, manga.Title, StringComparison.OrdinalIgnoreCase)))
+                throw new DuplicateMangaException(manga.Title, manga.Type);
+
+            mangas.Add(manga);
+        });
+    }
+
+    public void Update(Manga manga)
+    {
+        ArgumentNullException.ThrowIfNull(manga);
+
+        _store.Mutate(mangas =>
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
-            var opciones = new JsonSerializerOptions { WriteIndented = true };
-            string json = JsonSerializer.Serialize(mangas, opciones);
-            File.WriteAllText(_path, json);
-        }
+            int index = mangas.FindIndex(m => m.Id == manga.Id);
+            if (index == -1)
+                throw new MangaNotFoundException(manga.Id);
+
+            if (mangas.Any(m => m.Id != manga.Id && m.Type == manga.Type && string.Equals(m.Title, manga.Title, StringComparison.OrdinalIgnoreCase)))
+                throw new DuplicateMangaException(manga.Title, manga.Type);
+
+            mangas[index] = manga;
+        });
+    }
+
+    public void Delete(int id)
+    {
+        _store.Mutate(mangas =>
+        {
+            int removed = mangas.RemoveAll(m => m.Id == id);
+            if (removed == 0)
+                throw new MangaNotFoundException(id);
+        });
     }
 }
