@@ -1,3 +1,5 @@
+## Proyecto desarrollado originalmente por mí y posteriormente refactorizado con asistencia de IA
+
 # 📚 MangaVault
 
 Sistema de gestión personal de **mangas y novelas ligeras** construido en **C# (.NET 10 / C# 14)** siguiendo **Clean Architecture** en una solución multi-proyecto.
