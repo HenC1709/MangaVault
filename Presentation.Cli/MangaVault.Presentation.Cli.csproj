@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>MangaVault.Presentation.Cli</RootNamespace>
+    <AssemblyName>MangaVault</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\MangaVault.Core.csproj" />
+    <ProjectReference Include="..\Application\MangaVault.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\MangaVault.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

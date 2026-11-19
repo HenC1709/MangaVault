@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Core/MangaVault.Core.csproj" />
+  <Project Path="Application/MangaVault.Application.csproj" />
+  <Project Path="Infrastructure/MangaVault.Infrastructure.csproj" />
+  <Project Path="Presentation.Cli/MangaVault.Presentation.Cli.csproj" />
+  <Project Path="Tests/MangaVault.Tests.csproj" />
+</Solution>
