@@ -1,36 +1,30 @@
 using System.Text.Json.Serialization;
 
-namespace MangaVault.Core.Entities
+namespace MangaVault.Core.Entities;
+
+public class Genre
 {
-    public class Genre
+    [JsonInclude]
+    public string Name { get; private set; } = "";
+
+    public string Description
     {
-        private string _description = "";
+        get;
+        set => field = (value ?? "").Trim();
+    } = "";
 
-        [JsonInclude]
-        public string Name { get; private set; } = "";
+    public Genre() { }
 
-        public string Description
-        {
-            get => _description;
-            set => _description = (value ?? "").Trim();
-        }
+    public Genre(string name, string description = "")
+    {
+        Update(name, description);
+    }
 
-        public Genre() { }
+    public void Update(string name, string description = "")
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
-        public Genre(string name, string description = "")
-        {
-            Update(name, description);
-        }
-
-        public void Update(string name, string description = "")
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("El nombre del género no puede estar vacío.", nameof(name));
-            }
-
-            Name = name.Trim();
-            Description = description;
-        }
+        Name = name.Trim();
+        Description = description;
     }
 }

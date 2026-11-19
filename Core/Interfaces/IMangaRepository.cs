@@ -1,13 +1,12 @@
 using MangaVault.Core.Entities;
-using MangaVault.Core.Enums;
-namespace MangaVault.Core.Interfaces
+
+namespace MangaVault.Core.Interfaces;
+
+public interface IMangaRepository
 {
-    public interface IMangaRepository
-    {
-        List<Manga> GetAll();
-        Manga? GetById(int Id);
-        void Update(Manga manga);
-        void Save(Manga manga);
-        void Delete (int Id);
-    }
+    List<Manga> GetAll();
+    Manga? GetById(int id);
+    void Update(Manga manga);
+    void Save(Manga manga);
+    void Delete(int id);
 }

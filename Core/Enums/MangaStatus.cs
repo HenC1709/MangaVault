@@ -1,10 +1,9 @@
-namespace MangaVault.Core.Enums
+namespace MangaVault.Core.Enums;
+
+public enum MangaStatus
 {
-    public enum MangaStatus
-    {
-        Ongoing,
-        Completed,
-        Hiatus,
-        Cancelled
-    }
+    Ongoing,
+    Completed,
+    Hiatus,
+    Cancelled
 }
