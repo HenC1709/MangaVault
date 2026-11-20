@@ -31,7 +31,8 @@ public class MangaEntry
         ReadingStatus status = ReadingStatus.PlanToRead,
         int ownedVolumes = 0,
         int? rating = null,
-        bool isFavorite = false)
+        bool isFavorite = false,
+        DateTime? dateAdded = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(userId);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(mangaId);
@@ -43,7 +44,11 @@ public class MangaEntry
         MangaId = mangaId;
         CurrentChapter = currentChapter;
         ReadingStatus = status;
-        DateAdded = DateTime.UtcNow;
+        DateAdded = dateAdded.HasValue
+            ? (dateAdded.Value.Kind == DateTimeKind.Local
+                ? dateAdded.Value.ToUniversalTime()
+                : DateTime.SpecifyKind(dateAdded.Value, DateTimeKind.Utc))
+            : DateTime.UtcNow;
 
         SetOwnedVolumes(ownedVolumes);
         SetRating(rating);

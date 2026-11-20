@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>MangaVault.Wpf</RootNamespace>
+    <AssemblyName>MangaVault.Wpf</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\MangaVault.Core.csproj" />
+    <ProjectReference Include="..\Application\MangaVault.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\MangaVault.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
