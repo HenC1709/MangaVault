@@ -13,6 +13,7 @@
 | **MVP 2** – Cuentas + biblioteca personal | ✅ Completado | `5 / 5` | `UserService`, `MangaService`, `FavoriteService`, menús CLI, 21 tests |
 | **MVP 3** – Base de datos SQLite | ✅ Completado | `4 / 4` | `Microsoft.Data.Sqlite 10.0.0`, DDL al arranque, repos SQLite, seed + importador JSON |
 | **MVP 4** – Interfaz de escritorio WPF | ✅ Completado | `4 / 4` | `MangaVault.Wpf` (MVVM + DI + tema oscuro), 4 secciones funcionales, 12 tests WPF |
+| **MVP 4.1** - API de portadas, sipnopsis y mangakas y animaciones | ⬜ Pendiente | ` 0 / 4 `, | Portadas dinamicas, mangakas actualizados, animaciones pulidas y leves 
 | **MVP 5** – Ejecutable independiente (`.exe`) | ⬜ Pendiente | `0 / 6` | `dotnet publish` single-file, acceso directo y uso sin IDE |
 
 ---
