@@ -1,5 +1,8 @@
 # Visión SQL – MangaVault
 
+> [!NOTE]
+> **Estado: ✅ Implementado (MVP 3)** con `Microsoft.Data.Sqlite 10.0.0` (SQL directo parametrizado, `COLLATE NOCASE` en `Works.Title` y `Collections.Name`, seed de 20 géneros e importador idempotente `JsonToSqliteImporter`).
+
 Reemplazar los JSON (`users.json`, `mangas.json`, `favorites.json`) por una base relacional.
 
 ## Motor recomendado: **SQLite**

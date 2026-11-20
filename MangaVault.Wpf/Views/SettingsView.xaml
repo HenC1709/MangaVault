@@ -1,0 +1,183 @@
+<UserControl x:Class="MangaVault.Wpf.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="28,24,28,28" MaxWidth="920" HorizontalAlignment="Left">
+      <ProgressBar Style="{StaticResource DarkProgressBarStyle}"
+                   IsIndeterminate="True"
+                   Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                   Margin="0,0,0,14" />
+
+      <Border Style="{StaticResource ErrorBannerStyle}"
+              Visibility="{Binding HasError, Converter={StaticResource BoolToVisibilityConverter}}"
+              Margin="0,0,0,16">
+        <TextBlock Text="{Binding ErrorMessage}"
+                   Foreground="{StaticResource ErrorBrush}"
+                   TextWrapping="Wrap" />
+      </Border>
+
+      <!-- Sesión activa -->
+      <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,18">
+        <DockPanel>
+          <Button DockPanel.Dock="Right"
+                  Content="Cerrar sesión"
+                  Style="{StaticResource DestructiveButtonStyle}"
+                  VerticalAlignment="Center"
+                  Command="{Binding SignOutCommand}" />
+          <StackPanel>
+            <TextBlock Text="Cuenta y sesión activa" Style="{StaticResource SectionTitleTextStyle}" Margin="0,0,0,10" />
+            <TextBlock Style="{StaticResource BodyTextStyle}" Margin="0,0,0,4">
+              <Run Text="Usuario: " Foreground="{StaticResource SecondaryTextBrush}" />
+              <Run Text="{Binding UserName, Mode=OneWay}" FontWeight="SemiBold" />
+            </TextBlock>
+            <TextBlock Style="{StaticResource BodyTextStyle}" Margin="0,0,0,4">
+              <Run Text="Rol: " Foreground="{StaticResource SecondaryTextBrush}" />
+              <Run Text="{Binding UserRoleLabel, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock Style="{StaticResource SecondaryTextStyle}">
+              <Run Text="Inicio de sesión: " />
+              <Run Text="{Binding SessionStartedDisplay, Mode=OneWay}" />
+            </TextBlock>
+          </StackPanel>
+        </DockPanel>
+      </Border>
+
+      <!-- Cambio de contraseña -->
+      <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,18">
+        <StackPanel>
+          <TextBlock Text="Seguridad de la cuenta" Style="{StaticResource SectionTitleTextStyle}" Margin="0,0,0,6" />
+          <TextBlock Text="Actualiza tu contraseña usando el hash PBKDF2-SHA256 configurado en Infrastructure."
+                     Style="{StaticResource SecondaryTextStyle}"
+                     Margin="0,0,0,14" />
+
+          <Border Style="{StaticResource ErrorBannerStyle}"
+                  Visibility="{Binding HasPasswordError, Converter={StaticResource BoolToVisibilityConverter}}"
+                  Margin="0,0,0,14">
+            <TextBlock Text="{Binding PasswordErrorMessage}"
+                       Foreground="{StaticResource ErrorBrush}"
+                       TextWrapping="Wrap" />
+          </Border>
+
+          <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="12" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="12" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+              <TextBlock Text="Contraseña actual" Style="{StaticResource FieldLabelTextStyle}" />
+              <PasswordBox x:Name="CurrentPasswordInput" Style="{StaticResource DarkPasswordBoxStyle}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+              <TextBlock Text="Nueva contraseña" Style="{StaticResource FieldLabelTextStyle}" />
+              <PasswordBox x:Name="NewPasswordInput" Style="{StaticResource DarkPasswordBoxStyle}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="4">
+              <TextBlock Text="Confirmar nueva" Style="{StaticResource FieldLabelTextStyle}" />
+              <PasswordBox x:Name="ConfirmPasswordInput" Style="{StaticResource DarkPasswordBoxStyle}" />
+            </StackPanel>
+          </Grid>
+
+          <Button Content="Actualizar contraseña"
+                  Style="{StaticResource PrimaryButtonStyle}"
+                  HorizontalAlignment="Left"
+                  Click="ChangePassword_Click" />
+        </StackPanel>
+      </Border>
+
+      <!-- Base de datos SQLite y migración -->
+      <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,18">
+        <StackPanel>
+          <TextBlock Text="Almacenamiento SQLite y migración" Style="{StaticResource SectionTitleTextStyle}" Margin="0,0,0,12" />
+
+          <TextBlock Text="Carpeta de datos" Style="{StaticResource FieldLabelTextStyle}" />
+          <TextBox Style="{StaticResource DarkTextBoxStyle}"
+                   Text="{Binding DataDirectory, Mode=OneWay}"
+                   IsReadOnly="True"
+                   Margin="0,0,0,10" />
+
+          <TextBlock Text="Base de datos SQLite" Style="{StaticResource FieldLabelTextStyle}" />
+          <TextBox Style="{StaticResource DarkTextBoxStyle}"
+                   Text="{Binding DatabasePath, Mode=OneWay}"
+                   IsReadOnly="True"
+                   Margin="0,0,0,10" />
+
+          <TextBlock Text="Carpeta de registros" Style="{StaticResource FieldLabelTextStyle}" />
+          <TextBox Style="{StaticResource DarkTextBoxStyle}"
+                   Text="{Binding LogsDirectory, Mode=OneWay}"
+                   IsReadOnly="True"
+                   Margin="0,0,0,14" />
+
+          <WrapPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="Abrir carpeta de datos"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Command="{Binding OpenDataFolderCommand}"
+                    Margin="0,0,10,8" />
+            <Button Content="Abrir carpeta de logs"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Command="{Binding OpenLogsFolderCommand}"
+                    Margin="0,0,10,8" />
+            <Button Content="Importar datos desde JSON"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Command="{Binding ImportJsonCommand}"
+                    Margin="0,0,0,8" />
+          </WrapPanel>
+
+          <TextBlock Text="Se detectaron archivos JSON heredados listos para importar de forma idempotente."
+                     Style="{StaticResource SecondaryTextStyle}"
+                     Foreground="{StaticResource SuccessBrush}"
+                     Visibility="{Binding HasLegacyJsonFiles, Converter={StaticResource BoolToVisibilityConverter}}"
+                     Margin="0,0,0,8" />
+
+          <Border Style="{StaticResource ElevatedCardStyle}"
+                  Visibility="{Binding HasMigrationSummary, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock Text="{Binding MigrationSummary}" Style="{StaticResource BodyTextStyle}" />
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <!-- Administración (solo Admin) -->
+      <Border Style="{StaticResource CardBorderStyle}"
+              Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+        <StackPanel>
+          <TextBlock Text="Usuarios registrados (Administrador)"
+                     Style="{StaticResource SectionTitleTextStyle}"
+                     Margin="0,0,0,6" />
+          <TextBlock Text="Vista de solo lectura autorizada únicamente para cuentas con rol Admin."
+                     Style="{StaticResource SecondaryTextStyle}"
+                     Margin="0,0,0,12" />
+
+          <ItemsControl ItemsSource="{Binding RegisteredUsers}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border Style="{StaticResource ElevatedCardStyle}" Margin="0,0,0,8" Padding="12,10">
+                  <DockPanel>
+                    <Border DockPanel.Dock="Right"
+                            Style="{StaticResource BadgeBorderStyle}"
+                            Background="{StaticResource PrimarySubtleBrush}">
+                      <TextBlock Text="{Binding RoleLabel}"
+                                 FontSize="11.5"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource PrimaryHoverBrush}" />
+                    </Border>
+                    <TextBlock Style="{StaticResource BodyTextStyle}" VerticalAlignment="Center">
+                      <Run Text="#" Foreground="{StaticResource SecondaryTextBrush}" />
+                      <Run Text="{Binding UserId, Mode=OneWay}" Foreground="{StaticResource SecondaryTextBrush}" />
+                      <Run Text="  " />
+                      <Run Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+                  </DockPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

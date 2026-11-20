@@ -3,6 +3,7 @@ using MangaVault.Application.Services;
 using MangaVault.Core.Entities;
 using MangaVault.Core.Enums;
 using MangaVault.Core.Exceptions;
+using MangaVault.Core.Interfaces;
 using MangaVault.Infrastructure.Logging;
 
 namespace MangaVault.Presentation.Cli.Menus;
@@ -10,7 +11,8 @@ namespace MangaVault.Presentation.Cli.Menus;
 public sealed class MangaMenu(
     MangaService mangaService,
     FavoriteService favoriteService,
-    ConsoleLogger logger)
+    ConsoleLogger logger,
+    IGenreRepository? genreRepository = null)
 {
     public void Show(Session? currentSession)
     {
@@ -153,6 +155,15 @@ public sealed class MangaMenu(
         Console.WriteLine("Estado: 0=Ongoing, 1=Completed, 2=Hiatus, 3=Cancelled");
         int statusInput = ReadNonNegativeInt("Estado (por defecto 0): ");
         MangaStatus status = Enum.IsDefined((MangaStatus)statusInput) ? (MangaStatus)statusInput : MangaStatus.Ongoing;
+
+        if (genreRepository is not null)
+        {
+            List<Genre> availableGenres = genreRepository.GetAll();
+            if (availableGenres.Count > 0)
+            {
+                Console.WriteLine($"Géneros disponibles: {string.Join(", ", availableGenres.Select(g => g.Name))}");
+            }
+        }
 
         Console.Write("Géneros (opcional, separados por coma): ");
         string? genresInput = Console.ReadLine();

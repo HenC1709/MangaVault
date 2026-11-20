@@ -3,5 +3,7 @@
   <Project Path="Application/MangaVault.Application.csproj" />
   <Project Path="Infrastructure/MangaVault.Infrastructure.csproj" />
   <Project Path="Presentation.Cli/MangaVault.Presentation.Cli.csproj" />
+  <Project Path="MangaVault.Wpf/MangaVault.Wpf.csproj" />
   <Project Path="Tests/MangaVault.Tests.csproj" />
+  <Project Path="Tests.Wpf/MangaVault.Wpf.Tests.csproj" />
 </Solution>

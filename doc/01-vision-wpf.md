@@ -1,5 +1,8 @@
 # Visión WPF – MangaVault
 
+> [!NOTE]
+> **Estado: ✅ Implementado (MVP 4)** en `MangaVault.Wpf` (`net10.0-windows`, MVVM con `CommunityToolkit.Mvvm 8.4.0`, DI con `Microsoft.Extensions.DependencyInjection 10.0.0`, tema oscuro y suite `Tests.Wpf`). Pendiente para **MVP 5**: publicación single-file `.exe`, icono/acceso directo y respaldo de `.db`; la pantalla de Colecciones queda sujeta a crear `CollectionService` en `Application`.
+
 Biblioteca personal de **manga y novelas ligeras (LN)** con interfaz de escritorio WPF (.NET 10, Windows).
 
 ## Objetivo
@@ -16,7 +19,7 @@ MangaVault.sln
 └── MangaVault.Wpf             (Views, ViewModels, Converters, Resources)
 ```
 
-> Hoy todo está en UN solo `MangaVault.csproj`. Primero hay que separarlo en una solución con varios proyectos (ver `02-errores.md`).
+> La solución `MangaVault.slnx` ya está separada en 7 proyectos (`Core`, `Application`, `Infrastructure`, `Presentation.Cli`, `MangaVault.Wpf`, `Tests`, `Tests.Wpf`).
 
 - **MVVM**: `CommunityToolkit.Mvvm` (`ObservableObject`, `RelayCommand`).
 - **DI**: `Microsoft.Extensions.DependencyInjection` / `Host` en `App.xaml.cs`.
